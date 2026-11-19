@@ -26,7 +26,6 @@ assignment rather than representing an additional task.
 | Task 4: server | [`server.go`](cmd/server/server.go), [`SayHello`](internal/greeter/service.go), [protobuf contract](api/greeter/v1/greeter.proto) |
 | Task 5: client | [`client.go`](cmd/client/client.go) |
 | Task 6: GitOps | Companion repository, [Argo CD Application](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/gitops/argocd/application.yaml) and [manifests](https://github.com/cohavisi/utila-gRPC-Infrastructure/tree/main/gitops) |
-| Optional Helm version | Companion repository, [chart](https://github.com/cohavisi/utila-gRPC-Infrastructure/tree/main/gitops/helm/greeter) and [migration guide](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/part-2-tasks-3-6-kustomize-to-helm.md); live demo remains on Kustomize |
 | Live deployment | Companion repository, [evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md) |
 
 Task 3 uses Terraform to provision GCP; Task 6 uses Argo CD to reconcile the
