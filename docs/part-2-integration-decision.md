@@ -68,6 +68,24 @@ this baseline.
 Fleet enrollment and CA Service are not part of this non-mTLS baseline. Revisit
 them if adopting the documented GKE managed-certificate security integration.
 
+### When this decision should change
+
+These are decision triggers, not capabilities already implemented or measured.
+They extend the [Task 2 assumptions](task-2-solution-comparison.md#1-assumptions-and-decision-criteria)
+beyond the assignment's demonstration.
+
+| Area | Current choice | Trigger and response |
+| --- | --- | --- |
+| Protocols and clients | Go gRPC clients with compatible xDS support | Required protocols or policies exceed library support: reassess an Envoy data plane or transparent mesh rather than assuming proxyless feature parity. |
+| Application security | Plaintext on private pod addresses | Required workload authentication, authorization, or encryption: add and verify the supported credentials, certificate lifecycle, and security policies before production use. Private IPs alone are not a security guarantee. |
+| Availability | Single-zone GKE demonstration | An agreed availability objective requires zone-failure tolerance: assess regional/multi-zone capacity, placement, all zonal NEG attachments, and fault-injection evidence. Define error-rate, latency, and convergence objectives first. |
+| Operational ownership | Terraform owns cloud resources; Argo CD owns application manifests | Adoption by more teams: assign owners for IAM, routing, client upgrades, and incidents; add reviewed IaC delivery and workload-identity controls without granting applications provisioning roles. |
+| Cost and capacity | Small fixed node pool and a low-rate unary workload | Fleet growth or tighter latency/capacity objectives: measure connection counts, resource use, and representative traffic; compare mesh-client, proxy, compute, and telemetry costs. No savings or capacity claim follows from this demo. |
+| Migration and rollback | Digest-pinned image and Git-controlled server rollout | Wider adoption: stage a limited migration with explicit abort criteria and compatible client/server versions. Revert application image/configuration through Git; review infrastructure rollback separately and preserve backend/NEG lifecycle ordering. |
+
+The [AI-use retrospective](engineering-approach-and-ai-use.md) connects two
+decisions from this delivery to their supporting evidence.
+
 ## 2. Client and server xDS responsibilities
 
 ### Client

@@ -14,6 +14,7 @@ including the initial discovery errors and measured observation windows.
 
 | Requirement | Implementation / explanation |
 | --- | --- |
+| Engineering approach | [AI-assisted workflow, decision stories, and verification boundaries](docs/engineering-approach-and-ai-use.md) |
 | Part 1, Task 1 | [gRPC load-balancing analysis](docs/task-1-grpc-load-balancing.md) |
 | Part 1, Task 2 | [Solution comparison](docs/task-2-solution-comparison.md) |
 | Part 2 architecture | [Integration decision](docs/part-2-integration-decision.md) and [implementation plan](docs/part-2-implementation-plan.md) |

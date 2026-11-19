@@ -10,8 +10,12 @@ Cloud Service Mesh is mandatory for this part regardless of the architectural
 recommendation in [Task 2](task-2-solution-comparison.md).
 
 This records the implementation plan; the deployment and its demonstration
-are now complete. Application code, containers, Terraform stacks, and Argo
-CD/Kustomize manifests are published in the two repositories. Follow the
+are now complete. The numbered steps describe the delivery sequence; the current
+milestone and linked evidence record its outcome. The separately written
+[AI-use retrospective](engineering-approach-and-ai-use.md) explains roles and
+decisions without presenting them as contemporaneous notes.
+Application code, containers, Terraform stacks, and Argo CD/Kustomize manifests
+are published in the two repositories. Follow the
 [application README](../README.md) and
 [infrastructure runbook](https://github.com/cohavisi/utila-gRPC-Infrastructure#readme).
 The [deployment evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md)
@@ -107,7 +111,6 @@ Have Argo CD reconcile:
 - Server Deployment and Service.
 - Client workload.
 - Bootstrap mounts or generation configuration.
-- Supported Kubernetes mesh routing resources.
 - Readiness checks and resource requests/limits.
 
 Start with three server replicas so distribution is visible.
@@ -116,7 +119,9 @@ Start with three server replicas so distribution is visible.
 reconciles Kubernetes resources. If the assignment's "fully managed by ArgoCD"
 wording is interpreted to include Terraform execution, that requires an
 explicit additional integration, not an assumption that Argo CD runs Terraform
-natively. Avoid two systems managing the same resource.
+natively. The selected model has no Kubernetes mesh-routing CRDs: Terraform
+owns the Google Cloud `Mesh`, `GRPCRoute`, and server endpoint policy. Avoid two
+systems managing the same resource.
 
 **Outcome:** application deployments and Kubernetes configuration reconciled
 from Git, with the infrastructure provisioning boundary documented.
