@@ -12,12 +12,16 @@ including the initial discovery errors and measured observation windows.
 
 ## Assignment guide
 
+Document names identify the assignment part and task. The Part 2 plan and
+integration decision cover Tasks 3-6 together; the `00-` overview spans the
+assignment rather than representing an additional task.
+
 | Requirement | Implementation / explanation |
 | --- | --- |
-| Engineering approach | [AI-assisted workflow, decision stories, and verification boundaries](docs/engineering-approach-and-ai-use.md) |
-| Part 1, Task 1 | [gRPC load-balancing analysis](docs/task-1-grpc-load-balancing.md) |
-| Part 1, Task 2 | [Solution comparison](docs/task-2-solution-comparison.md) |
-| Part 2 architecture | [Integration decision](docs/part-2-integration-decision.md) and [implementation plan](docs/part-2-implementation-plan.md) |
+| Engineering approach | [AI-assisted workflow, decision stories, and verification boundaries](docs/00-engineering-approach-and-ai-use.md) |
+| Part 1, Task 1 | [gRPC load-balancing analysis](docs/part-1-task-1-grpc-load-balancing.md) |
+| Part 1, Task 2 | [Solution comparison](docs/part-1-task-2-solution-comparison.md) |
+| Part 2 architecture | [Integration decision](docs/part-2-tasks-3-6-integration-decision.md) and [implementation plan](docs/part-2-tasks-3-6-implementation-plan.md) |
 | Task 3: GCP IaC | Companion repository, [Terraform](https://github.com/cohavisi/utila-gRPC-Infrastructure/tree/main/terraform) |
 | Task 4: server | [`server.go`](cmd/server/server.go), [`SayHello`](internal/greeter/service.go), [protobuf contract](api/greeter/v1/greeter.proto) |
 | Task 5: client | [`client.go`](cmd/client/client.go) |

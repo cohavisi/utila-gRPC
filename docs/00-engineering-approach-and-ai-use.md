@@ -1,4 +1,4 @@
-# Engineering Approach and AI Use
+# Engineering Overview: Approach and AI Use
 
 **Retrospective, 2026-11-19.** This account was written after deployment. It
 summarizes the recorded workflow, not a contemporaneous decision log or a claim
@@ -43,7 +43,7 @@ a claim that Gateway API or Terraform integration was impossible.
 **Decision:** use native service-routing resources and standalone NEGs, avoiding
 `local-exec` and supporting the required server endpoint policy.
 
-**Evidence:** the [recorded rationale and primary references](part-2-integration-decision.md#why-this-path)
+**Evidence:** the [recorded rationale and primary references](part-2-tasks-3-6-integration-decision.md#why-this-path)
 are included in [application source commit `97c8a93`](https://github.com/cohavisi/utila-gRPC/commit/97c8a93b730129e1870f824d20b3dbf998a6346e).
 The selected path was subsequently exercised in the live deployment.
 
@@ -76,9 +76,9 @@ controller retained distinct ownership; cleanup order was documented.
 The demonstration does not establish production readiness, application mTLS,
 node/network-failure resilience, or long-lived-stream behavior. Time savings
 and performance improvements were not benchmarked. The
-[decision-change criteria](part-2-integration-decision.md#when-this-decision-should-change)
+[decision-change criteria](part-2-tasks-3-6-integration-decision.md#when-this-decision-should-change)
 explain how additional requirements would change the architecture.
 
-For the full sequence, read the [research comparison](task-2-solution-comparison.md),
-[delivery plan](part-2-implementation-plan.md), [integration decision](part-2-integration-decision.md),
+For the full sequence, read the [research comparison](part-1-task-2-solution-comparison.md),
+[delivery plan](part-2-tasks-3-6-implementation-plan.md), [integration decision](part-2-tasks-3-6-integration-decision.md),
 and linked runtime evidence.

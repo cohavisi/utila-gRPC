@@ -1,4 +1,4 @@
-# Task 2: Solution Comparison and GCP Recommendation
+# Part 1, Task 2: Solution Comparison and GCP Recommendation
 
 ## Executive recommendation
 
@@ -30,7 +30,7 @@ configuration. The assignment does not establish a need for multi-region
 failover, centralized canary routing, or uniform mesh-wide security policies.
 Those are decision-changing requirements, not assumptions to introduce silently.
 
-Building on [Task 1](task-1-grpc-load-balancing.md), a suitable solution must
+Building on [Task 1](part-1-task-1-grpc-load-balancing.md), a suitable solution must
 select backends for **new RPCs**, discover changes as pods scale, and handle
 backend failures. Existing streaming RPCs remain attached to their selected
 backends; no option below transparently redistributes messages from one
@@ -259,7 +259,7 @@ chosen path before implementation; do not infer general availability merely
 from the presence of a tutorial. [8][14][16][17]
 
 For Part 2, the GKE Gateway API path is a documented candidate aligned with
-GitOps. Subsequent [integration confirmation](part-2-integration-decision.md)
+GitOps. Subsequent [integration confirmation](part-2-tasks-3-6-integration-decision.md)
 selected Google Cloud service-routing APIs with GKE NEGs instead, based on native
 Terraform coverage and the explicit server-side xDS endpoint-policy mechanism.
 The decision records verification boundaries and live deployment findings.

@@ -1,4 +1,4 @@
-# Part 2: Proxyless gRPC Implementation Plan
+# Part 2, Tasks 3-6: Proxyless gRPC Implementation Plan
 
 ## Objective
 
@@ -7,12 +7,12 @@ Mesh's proxyless architecture, provision infrastructure through IaC, and deploy
 Kubernetes resources through GitOps.
 
 Cloud Service Mesh is mandatory for this part regardless of the architectural
-recommendation in [Task 2](task-2-solution-comparison.md).
+recommendation in [Task 2](part-1-task-2-solution-comparison.md).
 
 This records the implementation plan; the deployment and its demonstration
 are now complete. The numbered steps describe the delivery sequence; the current
 milestone and linked evidence record its outcome. The separately written
-[AI-use retrospective](engineering-approach-and-ai-use.md) explains roles and
+[AI-use retrospective](00-engineering-approach-and-ai-use.md) explains roles and
 decisions without presenting them as contemporaneous notes.
 Application code, containers, Terraform stacks, and Argo CD/Kustomize manifests
 are published in the two repositories. Follow the
@@ -40,7 +40,7 @@ responsibilities. Do not mix Kubernetes Gateway API resources with similarly
 named Google Cloud service-routing resources.
 
 **Outcome:** recorded in the
-[integration decision](part-2-integration-decision.md). The selected path uses
+[integration decision](part-2-tasks-3-6-integration-decision.md). The selected path uses
 Google Cloud service-routing APIs, GKE standalone NEGs, and a `GRPC_SERVER`
 endpoint policy, rather than GKE Gateway API onboarding. Native Terraform schema
 coverage and Go/bootstrap requirements are confirmed. The selected integration
@@ -170,7 +170,7 @@ that a reviewer can follow and reproduce.
 ## Current milestone
 
 The integration model and server-side xDS mechanism are documented in the
-[integration decision](part-2-integration-decision.md). Both repositories now
+[integration decision](part-2-tasks-3-6-integration-decision.md). Both repositories now
 contain their published implementation. The image is published and digest-pinned;
 GKE, the managed mesh, and Argo CD are running in `vast-maxim-388708`,
 `us-central1-a`. Managed xDS, three-to-five-backend distribution, pod replacement,
