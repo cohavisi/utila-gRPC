@@ -4,6 +4,14 @@ Application repository for the DevOps assignment. Infrastructure, Kubernetes
 configuration, and Argo CD live in
 [utila-gRPC-Infrastructure](https://github.com/cohavisi/utila-gRPC-Infrastructure).
 
+> **Assignment scope:** Task 3 provisions GCP with Terraform; Task 6 uses
+> Argo CD to reconcile the application's Kubernetes resources. This submission
+> interprets "fully managed by ArgoCD" as application-level GitOps, not
+> Argo-driven Terraform or cloud-resource reconciliation. Argo CD itself and its
+> Application/AppProject are bootstrapped with `kubectl`. A broader interpretation
+> would require additional integration; evaluator acceptance of this boundary
+> is not assumed.
+
 **Status:** deployed and verified against Google-managed Cloud Service Mesh in
 `vast-maxim-388708` (`us-central1-a`). Argo CD is Healthy/Synced; the same running
 client demonstrated distribution, GitOps scale-out, pod replacement, and server
@@ -27,11 +35,6 @@ assignment rather than representing an additional task.
 | Task 5: client | [`client.go`](cmd/client/client.go) |
 | Task 6: GitOps | Companion repository, [Argo CD Application](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/gitops/argocd/application.yaml) and [manifests](https://github.com/cohavisi/utila-gRPC-Infrastructure/tree/main/gitops) |
 | Live deployment | Companion repository, [evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md) |
-
-Task 3 uses Terraform to provision GCP; Task 6 uses Argo CD to reconcile the
-application's Kubernetes manifests. Argo CD does not execute Terraform. This is
-the documented interpretation of "fully managed by ArgoCD" for the Kubernetes
-deployment, not a claim that cloud provisioning is Argo-managed.
 
 ## Design
 
@@ -97,3 +100,6 @@ and finite runs exit nonzero if any call fails. JSON success logs contain
 
 For reviewer deployment and evidence commands, follow the
 [infrastructure runbook](https://github.com/cohavisi/utila-gRPC-Infrastructure#readme).
+For an independent deployment, start with its
+[writable-repository and Argo CD source setup](https://github.com/cohavisi/utila-gRPC-Infrastructure#0-prepare-writable-repositories-and-the-argo-cd-source);
+reconfiguring the cloud project alone does not retarget Argo CD to your fork.
