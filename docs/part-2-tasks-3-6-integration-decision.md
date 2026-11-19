@@ -72,7 +72,7 @@ them if adopting the documented GKE managed-certificate security integration.
 
 These are decision triggers, not capabilities already implemented or measured.
 They extend the [Task 2 assumptions](part-1-task-2-solution-comparison.md#1-assumptions-and-decision-criteria)
-beyond the assignment's demonstration.
+beyond the current demonstration.
 
 | Area | Current choice | Trigger and response |
 | --- | --- | --- |
@@ -120,9 +120,8 @@ equivalent to this xDS metadata: the generator must receive the matching
 `--node-metadata=app=greeter` argument. [3][9]
 
 This confirms an actual server-side xDS configuration mechanism, not just
-client-side discovery. The assignment's phrase "server uses xDS for discovery
-and load balancing" is implemented according to the protocol's roles: the
-caller discovers and balances; the server consumes inbound listener/policy
+client-side discovery. Client and server integration follow the protocol's
+roles: the caller discovers and balances; the server consumes inbound listener/policy
 configuration.
 
 Log xDS serving-mode changes and make readiness reflect the application's
@@ -132,7 +131,7 @@ is not proof of accepted xDS configuration.
 
 ### Transport scope
 
-For the assignment's minimal balancing demonstration, the baseline is explicit
+For this minimal balancing demonstration, the baseline is explicit
 **plaintext application gRPC on private pod addresses**, not an assertion of
 production security. The endpoint-policy API permits omission of
 `serverTlsPolicy`, which disables authentication for that endpoint. Do not

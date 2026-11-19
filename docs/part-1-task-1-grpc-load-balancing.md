@@ -128,7 +128,7 @@ reconnection must define how to resume work safely. [3]
 
 ## 3. Why HTTP/1.1 often shows less imbalance
 
-The assignment's statement that HTTP/1.1 "does not suffer from this" needs
+The claim that HTTP/1.1 "does not suffer from this" needs
 qualification: **HTTP/1.1 is not immune to connection pinning**.
 
 HTTP/1.1 does not provide HTTP/2-style multiplexing of independent concurrent

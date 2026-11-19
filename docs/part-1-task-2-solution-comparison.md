@@ -16,9 +16,9 @@ These are different scopes, not competing claims that one product is always
 best. A mesh is not necessary merely to distribute unary RPCs. Conversely, DNS
 plus round robin is not a substitute for a centrally managed mesh.
 
-**Part 2 uses Cloud Service Mesh with proxyless gRPC regardless of this
-recommendation, as the assignment requires.** This document evaluates the
-architecture; the completed deployment, measured results, and screenshots are
+**Part 2 uses Cloud Service Mesh with proxyless gRPC to demonstrate centrally
+managed discovery and policy beyond the minimal DNS-based fix.** This document
+evaluates the architecture; the completed deployment, measured results, and screenshots are
 recorded separately in the
 [live evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md).
 
@@ -26,7 +26,7 @@ recorded separately in the
 
 The initial recommendation assumes one GKE cluster, internal gRPC traffic,
 control over the Go clients, and permission to update their dependencies and
-configuration. The assignment does not establish a need for multi-region
+configuration. The initial scope does not establish a need for multi-region
 failover, centralized canary routing, or uniform mesh-wide security policies.
 Those are decision-changing requirements, not assumptions to introduce silently.
 
@@ -237,7 +237,7 @@ existing streams.
 6. **Keep server and client roles distinct.** The caller chooses backends.
    Server-side xDS can supply supported inbound listener/security configuration;
    it does not make the server distribute incoming calls to other pods.
-   Implement the assignment's xDS server integration separately from the
+   Implement the xDS server integration separately from the
    client's balancing logic.
 
 ### Choose one GCP configuration model

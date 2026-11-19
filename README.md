@@ -1,16 +1,14 @@
 # Proxyless Go gRPC on Cloud Service Mesh
 
-Application repository for the DevOps assignment. Infrastructure, Kubernetes
-configuration, and Argo CD live in
+Application repository for the proxyless gRPC demonstration. Infrastructure,
+Kubernetes configuration, and Argo CD live in
 [utila-gRPC-Infrastructure](https://github.com/cohavisi/utila-gRPC-Infrastructure).
 
-> **Assignment scope:** Task 3 provisions GCP with Terraform; Task 6 uses
-> Argo CD to reconcile the application's Kubernetes resources. This submission
-> interprets "fully managed by ArgoCD" as application-level GitOps, not
-> Argo-driven Terraform or cloud-resource reconciliation. Argo CD itself and its
-> Application/AppProject are bootstrapped with `kubectl`. A broader interpretation
-> would require additional integration; evaluator acceptance of this boundary
-> is not assumed.
+> **Deployment scope:** Terraform provisions GCP infrastructure; Argo CD
+> reconciles the application's Kubernetes resources. GitOps covers application
+> resources, not Terraform execution or cloud-resource reconciliation.
+> Argo CD itself and its Application/AppProject are bootstrapped with `kubectl`.
+> Argo-driven cloud provisioning would require additional integration.
 
 **Status:** deployed and verified against Google-managed Cloud Service Mesh in
 `vast-maxim-388708` (`us-central1-a`). Argo CD is Healthy/Synced; the same running
@@ -18,11 +16,11 @@ client demonstrated distribution, GitOps scale-out, pod replacement, and server
 rollout. See [deployment evidence and screenshots](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md),
 including the initial discovery errors and measured observation windows.
 
-## Assignment guide
+## Documentation guide
 
-Document names identify the assignment part and task. The Part 2 plan and
+Document names identify the documentation part and task. The Part 2 plan and
 integration decision cover Tasks 3-6 together; the `00-` overview spans the
-assignment rather than representing an additional task.
+project rather than representing an additional task.
 
 | Requirement | Implementation / explanation |
 | --- | --- |

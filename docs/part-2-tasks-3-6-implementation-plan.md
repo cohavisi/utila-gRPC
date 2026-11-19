@@ -6,8 +6,9 @@ Deploy a working Go gRPC client and server on GKE using Google Cloud Service
 Mesh's proxyless architecture, provision infrastructure through IaC, and deploy
 Kubernetes resources through GitOps.
 
-Cloud Service Mesh is mandatory for this part regardless of the architectural
-recommendation in [Task 2](part-1-task-2-solution-comparison.md).
+This implementation adopts Cloud Service Mesh to demonstrate managed discovery
+and policy beyond the minimal balancing recommendation in
+[Task 2](part-1-task-2-solution-comparison.md).
 
 This records the implementation plan; the deployment and its demonstration
 are now complete. The numbered steps describe the delivery sequence; the current
@@ -48,8 +49,8 @@ has also been verified against the live managed control plane.
 
 ## 2. Establish the two repositories
 
-The assignment requests separate application and infrastructure/GitOps
-repositories.
+Separate application and infrastructure/GitOps repositories keep application
+delivery and infrastructure configuration distinct.
 
 | Repository | Contents |
 | --- | --- |
@@ -116,11 +117,10 @@ Have Argo CD reconcile:
 Start with three server replicas so distribution is visible.
 
 **Ownership boundary:** Terraform provisions cloud infrastructure; Argo CD
-reconciles Kubernetes resources. If the assignment's "fully managed by ArgoCD"
-wording is interpreted to include Terraform execution, that requires an
-explicit additional integration, not an assumption that Argo CD runs Terraform
-natively. The selected model has no Kubernetes mesh-routing CRDs: Terraform
-owns the Google Cloud `Mesh`, `GRPCRoute`, and server endpoint policy. Avoid two
+reconciles Kubernetes resources. Extending Argo CD management to Terraform
+execution requires an explicit additional integration; Argo CD does not run
+Terraform natively. The selected model has no Kubernetes mesh-routing CRDs:
+Terraform owns the Google Cloud `Mesh`, `GRPCRoute`, and server endpoint policy. Avoid two
 systems managing the same resource.
 
 **Outcome:** application deployments and Kubernetes configuration reconciled
@@ -148,7 +148,7 @@ access to the xDS control plane alone does not establish application mTLS.
 **Outcome:** recorded observations supporting the deployment's architectural
 claims, not just screenshots of running pods.
 
-## 7. Package the submission
+## 7. Package the project documentation
 
 Provide concise setup, architecture, verification, limitations, and cleanup
 instructions.

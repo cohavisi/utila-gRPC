@@ -6,8 +6,8 @@ that the final design was known from the start.
 
 ## Roles and responsibilities
 
-The human contributor supplied the assignment, requested explanations and
-comparisons, approved the implementation plan, selected the deployment
+The human contributor supplied the project requirements, requested explanations
+and comparisons, approved the implementation plan, selected the deployment
 environment, and explicitly authorized billable provisioning and publication.
 
 GitHub Copilot CLI assisted with research, candidate designs, substantial code
