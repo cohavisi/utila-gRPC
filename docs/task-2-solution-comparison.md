@@ -257,9 +257,11 @@ chosen path before implementation; do not infer general availability merely
 from the presence of a tutorial. [8][14][16][17]
 
 For Part 2, the GKE Gateway API path is a documented candidate aligned with
-GitOps. Its support and provisioning prerequisites must be confirmed before
-committing the IaC design. This Task 2 analysis does not treat the different
-configuration models as interchangeable.
+GitOps. Subsequent [integration confirmation](part-2-integration-decision.md)
+selected Google Cloud service-routing APIs with GKE NEGs instead, based on native
+Terraform coverage and the explicit server-side xDS endpoint-policy mechanism.
+The decision records verification boundaries and remaining live deployment
+gates. These configuration models are not interchangeable.
 
 ## 5. Proxyless capabilities and limitations
 

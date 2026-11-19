@@ -1,0 +1,25 @@
+name: Application
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.27.4'
+          cache: true
+      - name: Verify generated protobuf sources
+        run: |
+          curl -fsSL https://github.com/protocolbuffers/protobuf/releases/download/v36.2/protoc-36.2-linux-x86_64.zip -o "$RUNNER_TEMP/protoc.zip"
+          echo "121f6c7afe1d4d0e3ea6aab9432038599250134cbf4474cb1167d2c7decd4278  $RUNNER_TEMP/protoc.zip" | sha256sum --check
+          unzip -q "$RUNNER_TEMP/protoc.zip" -d "$RUNNER_TEMP/protoc"
+          PATH="$RUNNER_TEMP/protoc/bin:$PATH" make proto
+          git diff --exit-code -- api go.mod go.sum
+      - run: test -z "$(gofmt -l cmd internal integration api)"
+      - run: make test build
+      - run: docker build --platform linux/amd64 --tag utila-grpc:ci .
