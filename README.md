@@ -17,11 +17,16 @@ including the initial discovery errors and measured observation windows.
 | Part 1, Task 1 | [gRPC load-balancing analysis](docs/task-1-grpc-load-balancing.md) |
 | Part 1, Task 2 | [Solution comparison](docs/task-2-solution-comparison.md) |
 | Part 2 architecture | [Integration decision](docs/part-2-integration-decision.md) and [implementation plan](docs/part-2-implementation-plan.md) |
-| Task 3: GCP IaC | Companion repository, `terraform/` |
-| Task 4: server | `cmd/server`, `internal/greeter`, `api/greeter/v1` |
-| Task 5: client | `cmd/client` |
-| Task 6: GitOps | Companion repository, `gitops/` |
+| Task 3: GCP IaC | Companion repository, [Terraform](https://github.com/cohavisi/utila-gRPC-Infrastructure/tree/main/terraform) |
+| Task 4: server | [`server.go`](cmd/server/server.go), [`SayHello`](internal/greeter/service.go), [protobuf contract](api/greeter/v1/greeter.proto) |
+| Task 5: client | [`client.go`](cmd/client/client.go) |
+| Task 6: GitOps | Companion repository, [Argo CD Application](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/gitops/argocd/application.yaml) and [manifests](https://github.com/cohavisi/utila-gRPC-Infrastructure/tree/main/gitops) |
 | Live deployment | Companion repository, [evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md) |
+
+Task 3 uses Terraform to provision GCP; Task 6 uses Argo CD to reconcile the
+application's Kubernetes manifests. Argo CD does not execute Terraform. This is
+the documented interpretation of "fully managed by ArgoCD" for the Kubernetes
+deployment, not a claim that cloud provisioning is Argo-managed.
 
 ## Design
 

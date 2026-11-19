@@ -16,9 +16,11 @@ These are different scopes, not competing claims that one product is always
 best. A mesh is not necessary merely to distribute unary RPCs. Conversely, DNS
 plus round robin is not a substitute for a centrally managed mesh.
 
-**Part 2 will use Cloud Service Mesh with proxyless gRPC regardless of this
+**Part 2 uses Cloud Service Mesh with proxyless gRPC regardless of this
 recommendation, as the assignment requires.** This document evaluates the
-architecture; it does not claim that a deployment has already been completed.
+architecture; the completed deployment, measured results, and screenshots are
+recorded separately in the
+[live evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md).
 
 ## 1. Assumptions and decision criteria
 
@@ -260,8 +262,8 @@ For Part 2, the GKE Gateway API path is a documented candidate aligned with
 GitOps. Subsequent [integration confirmation](part-2-integration-decision.md)
 selected Google Cloud service-routing APIs with GKE NEGs instead, based on native
 Terraform coverage and the explicit server-side xDS endpoint-policy mechanism.
-The decision records verification boundaries and remaining live deployment
-gates. These configuration models are not interchangeable.
+The decision records verification boundaries and live deployment findings.
+These configuration models are not interchangeable.
 
 ## 5. Proxyless capabilities and limitations
 
@@ -284,7 +286,7 @@ Authentication to the xDS server and TLS/mTLS for application RPCs are separate
 concerns. The former grants configuration access; it does not prove that the
 `SayHello` traffic is encrypted or that callers are authorized.
 
-## 6. Evidence to collect during Part 2
+## 6. Part 2 evidence and acceptance checks
 
 The deployment should demonstrate the architectural claims rather than only
 show that pods are running:
@@ -301,7 +303,11 @@ show that pods are running:
 - Verify the selected transport security and telemetry explicitly. Limit
   retries to safe operations and document long-lived stream behavior.
 
-These are proposed acceptance checks, not results from an existing deployment.
+These checks guided Part 2. See the
+[completed deployment evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md)
+for the exact scenarios observed, startup failures, screenshots, and untested
+scope; the checklist itself is not a claim that every possible failure or
+security configuration was tested.
 
 ## References
 
