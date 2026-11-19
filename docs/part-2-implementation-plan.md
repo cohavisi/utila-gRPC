@@ -9,13 +9,13 @@ Kubernetes resources through GitOps.
 Cloud Service Mesh is mandatory for this part regardless of the architectural
 recommendation in [Task 2](task-2-solution-comparison.md).
 
-This plan describes the full submission, not a claim that deployment is complete.
-Application code, containers, Terraform stacks, and Argo CD/Kustomize manifests
-are implemented locally in the two repositories. Follow the
+This records the implementation plan; the deployment and its demonstration
+are now complete. Application code, containers, Terraform stacks, and Argo
+CD/Kustomize manifests are published in the two repositories. Follow the
 [application README](../README.md) and
 [infrastructure runbook](https://github.com/cohavisi/utila-gRPC-Infrastructure#readme).
-Cloud provisioning is in progress. Managed xDS verification, deployment
-experiments, and screenshots remain outstanding.
+The [deployment evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md)
+records managed xDS verification, experiments, screenshots, and limitations.
 
 ## 1. Confirm the Cloud Service Mesh integration
 
@@ -39,8 +39,8 @@ named Google Cloud service-routing resources.
 [integration decision](part-2-integration-decision.md). The selected path uses
 Google Cloud service-routing APIs, GKE standalone NEGs, and a `GRPC_SERVER`
 endpoint policy, rather than GKE Gateway API onboarding. Native Terraform schema
-coverage and Go/bootstrap requirements are confirmed; live GCP verification
-remains a deployment gate.
+coverage and Go/bootstrap requirements are confirmed. The selected integration
+has also been verified against the live managed control plane.
 
 ## 2. Establish the two repositories
 
@@ -166,8 +166,11 @@ that a reviewer can follow and reproduce.
 
 The integration model and server-side xDS mechanism are documented in the
 [integration decision](part-2-integration-decision.md). Both repositories now
-contain their implementation. Image/toolchain availability and local
-implementation checks are now complete. The GCP project/location are selected
-and billable provisioning is approved. Complete provisioning, publish the image,
-and follow the staged deployment runbook to satisfy the remaining managed xDS
-and evidence gates.
+contain their published implementation. The image is published and digest-pinned;
+GKE, the managed mesh, and Argo CD are running in `vast-maxim-388708`,
+`us-central1-a`. Managed xDS, three-to-five-backend distribution, pod replacement,
+and server rollout were observed without restarting the client. Three server
+replicas are restored. Screenshots, measured windows, initial discovery errors,
+and scope limitations are linked above. Resources remain running and billable;
+use the runbook's ordered teardown only when the review environment is no
+longer required.

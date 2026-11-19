@@ -2,9 +2,10 @@
 
 **Decision date:** 2026-11-19
 
-**Status:** Application, Terraform, and GitOps implementation is available in
-the two repositories and locally validated. Live GCP verification remains a
-deployment gate. Approved cloud provisioning is now in progress.
+**Status:** implemented, deployed, and verified in GCP project `vast-maxim-388708`,
+zone `us-central1-a`. Both client and server accepted managed xDS configuration.
+See the [deployment evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md)
+for screenshots, exact observation windows, and initial discovery failures.
 
 ## 1. Selected architecture
 
@@ -133,15 +134,16 @@ this decision before deploying application traffic. [3]
 | Go gRPC | **1.85.0** | Released version; its module requires Go **1.26.0** |
 | Application build toolchain | Go **1.27.4** | Selected by `go.mod`, CI, and the digest-pinned builder; application and Linux image build locally |
 | Bootstrap generator | **0.20.0** | Source, image digest, amd64 architecture, executable flags, and server listener template checked |
-| GKE | Standard, VPC-native, supported Regular-channel version | Exact available version and project quota must be checked before creation |
+| GKE | Standard, VPC-native, Regular channel | Live cluster: **1.36.4-gke.2377000**, two private nodes |
 
 The Dockerfile pins the Go builder and nonroot distroless runtime by digest.
 The deployment pins bootstrap image
 `sha256:3f8bd252f6e902d1fe8bf834a5f29499dab628920ececb3ebdebd2906f0a641e`
 and selects amd64 nodes because that image is single-architecture. The image
-was pulled and its executable flags inspected locally; this is not a live
-GKE bootstrap or authentication check. Do not copy floating `latest` tags or
-old example Go versions into the deployment. [7][10]
+was pulled and its executable flags inspected locally, then successfully ran
+as an init container in the live GKE deployment. Managed client/server xDS
+acceptance verifies the chosen bootstrap/authentication integration. Do not copy
+floating `latest` tags or old example Go versions into the deployment. [7][10]
 
 Use a bootstrap init container and a shared in-memory volume for each workload:
 
@@ -248,7 +250,7 @@ The health listener must not falsely report ready before the application xDS
 listener can serve. Teardown must detach cloud backend references before
 deleting the Service/NEGs or cluster to prevent leaked resources. [4]
 
-## 6. Confirmation boundary and remaining gates
+## 6. Confirmation boundary and live findings
 
 **Confirmed locally:** a documented GKE/NEG integration, outbound and inbound
 xDS APIs, released version requirements, bootstrap fields, native Terraform
@@ -258,22 +260,32 @@ an ADS fixture and real xDS servers to demonstrate pre-configuration refusal,
 multiple backends, and an endpoint addition on an existing channel. That fixture
 is test-only and does not replace Google's managed control plane.
 
-**Deployment in progress:** a project and location have been selected and
-billable provisioning approved. Image publication, deployment screenshots, and
-a live Cloud Service Mesh connection are not yet confirmed. Follow the
+**Confirmed live:** image publication, completed bootstrap init containers,
+server xDS mode `SERVING`, healthy NEG endpoints, and successful client calls
+through the Google-managed route. The same client UID, with zero restarts,
+served across three backends, adopted five after GitOps scale-out, recovered
+through a pod replacement, and continued during replacement of all five
+servers. GitOps subsequently restored three replicas. The linked evidence
+contains the actual Argo CD screen and reduced Kubernetes/GCP/log observations.
+
+The initial route used Terraform's relative backend `.id`. The API accepted
+it, and server readiness/backend health were green, but the client did not
+receive a usable Listener. Using the backend's canonical `.self_link` fixed
+discovery **without restarting the client**. This demonstrates why schema
+validation and pod health alone were insufficient. The lifetime log snapshot
+includes **23 initial discovery failures**, followed by **4,821 successes and
+zero subsequent failures** through `2026-11-19T11:17:26Z`.
+
+The absence-of-Listener refusal case is verified by the local protocol
+integration test; it was not independently fault-injected into the live mesh.
+Live resilience observations cover unary RPCs and Kubernetes pod deletion, not
+node crashes, network partitions, long-lived streams, or application mTLS.
+Error-free observation windows are not guarantees of zero-loss failover.
+
+Reproduce the staged deployment using the
 [infrastructure runbook](https://github.com/cohavisi/utila-gRPC-Infrastructure#readme).
-Before considering the deployment complete, verify:
-
-- Billing/quota, the selected GKE version, required permissions, and enabled APIs.
-- Image publication and the actual running image/bootstrap digests.
-- Server Listener acceptance, endpoint-policy matching, and non-serving
-  behavior when configuration is absent.
-- Client route/endpoint acceptance and successful calls to multiple pods.
-- Endpoint changes after scaling and recovery after failure.
-
-If a live gate fails, investigate the chosen configuration instead of silently
-substituting DNS dialing, a plain non-xDS server, an additional local control
-plane, or a traffic-proxy sidecar.
+Do not silently substitute DNS dialing, a plain non-xDS server, an additional
+local control plane, or a traffic-proxy sidecar if a gate fails.
 
 ## References
 

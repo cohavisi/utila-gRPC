@@ -4,10 +4,11 @@ Application repository for the DevOps assignment. Infrastructure, Kubernetes
 configuration, and Argo CD live in
 [utila-gRPC-Infrastructure](https://github.com/cohavisi/utila-gRPC-Infrastructure).
 
-**Status:** application and local xDS integration are implemented. Cloud
-provisioning and deployment are in progress; managed xDS verification and
-screenshots remain outstanding. Local tests are not evidence of a working
-Google-managed control-plane connection.
+**Status:** deployed and verified against Google-managed Cloud Service Mesh in
+`vast-maxim-388708` (`us-central1-a`). Argo CD is Healthy/Synced; the same running
+client demonstrated distribution, GitOps scale-out, pod replacement, and server
+rollout. See [deployment evidence and screenshots](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md),
+including the initial discovery errors and measured observation windows.
 
 ## Assignment guide
 
@@ -20,6 +21,7 @@ Google-managed control-plane connection.
 | Task 4: server | `cmd/server`, `internal/greeter`, `api/greeter/v1` |
 | Task 5: client | `cmd/client` |
 | Task 6: GitOps | Companion repository, `gitops/` |
+| Live deployment | Companion repository, [evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md) |
 
 ## Design
 
@@ -67,6 +69,11 @@ docker run --rm --entrypoint /client utila-grpc:local -help
 One nonroot, digest-pinned image contains `/server` and `/client`. Linux amd64
 matches the pinned bootstrap image and GKE node selector. The Dockerfile also
 supports cross-compilation through BuildKit target arguments.
+
+The deployed image was built from application source commit
+`97c8a93b730129e1870f824d20b3dbf998a6346e`; later documentation-only commits do
+not change that image's source identity. The infrastructure overlay pins its
+Artifact Registry digest.
 
 Both binaries require `GRPC_XDS_BOOTSTRAP` pointing to a valid bootstrap file.
 They deliberately do not fall back to DNS or an ordinary non-xDS server.
