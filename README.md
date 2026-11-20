@@ -69,6 +69,29 @@ Generated protobuf sources are included. Regenerate with `protoc` **36.2**
 installed, using `make proto`; the Makefile pins both Go generator versions.
 CI verifies regeneration, formatting, race tests, vet, builds, and the container.
 
+### CI security and coverage
+
+On pushes and pull requests, additional checks run without cloud credentials:
+
+- Gitleaks scans the complete fetched Git history, redacts findings, and fails
+  on detected secrets.
+- `govulncheck` scans both built binaries for vulnerabilities in linked Go
+  symbols. Binary mode is intentional: source mode failed to load the selected
+  Go 1.27.4 standard library during validation. It does not provide source-level
+  call traces or prove that every linked function is executed.
+- Trivy scans the newly built Linux container, including its OS packages and
+  Go dependencies. HIGH and CRITICAL vulnerabilities fail CI, including those
+  without an available fix; no vulnerability exceptions are configured.
+
+Scanner versions are pinned, and downloaded scanner archives are checksum
+verified. These checks complement tests and review; a passing scan is not a
+production-security guarantee.
+
+`make test` also writes `coverage.out`. CI publishes the profile and a browsable
+`coverage.html` as the **go-coverage** artifact for 14 days. No minimum coverage
+threshold is enforced. Download reports from the workflow run's Artifacts
+section; coverage measures execution, not assertion quality.
+
 ### Pre-commit hook
 
 Enable the versioned hook once per clone:

@@ -2,3 +2,4 @@
 /.tools/
 /.tmp/
 coverage.out
+coverage.html
