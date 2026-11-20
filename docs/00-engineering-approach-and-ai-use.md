@@ -1,21 +1,25 @@
 # Engineering Overview: Approach and AI Use
 
-**Retrospective, 2026-11-19.** This account was written after deployment. It
-summarizes the recorded workflow, not a contemporaneous decision log or a claim
-that the final design was known from the start.
+**Initial deployment and live verification: 2026-11-19.**
+This document explains the engineering decisions, contributor responsibilities,
+AI assistance, and evidence behind the implementation. It was written after
+deployment, not as a contemporaneous decision log. Later verification and
+delivery improvements are identified separately below.
 
 ## Roles and responsibilities
 
-The human contributor supplied the project requirements, requested explanations
-and comparisons, approved the implementation plan, selected the deployment
-environment, and explicitly authorized billable provisioning and publication.
+I supplied the project requirements, requested explanations and comparisons,
+approved the implementation plan, selected the deployment environment, and
+authorized billable provisioning and publication. As the scope evolved, I chose
+to retain Kustomize and remove Helm support. I also requested a repeat evidence
+run with screenshots and, subsequently, pre-commit checks and CI security
+scanning.
 
 GitHub Copilot CLI assisted with research, candidate designs, substantial code
 and documentation generation, command execution, debugging, and verification.
-The decisions below emerged from that assisted workflow; they are not presented
-as unaided human discoveries. Cited verification was executed through
-AI-invoked tools and CI, not necessarily through manually repeated commands or
-an independent human review.
+Verification was executed through Copilot-invoked tools and CI; independent
+human re-execution is not claimed. The technical investigations below describe
+that assisted workflow.
 
 ## Working method
 
@@ -62,8 +66,43 @@ signals. Keep the failed startup observations in the report.
 
 **Evidence:** [route fix `fc4d032`](https://github.com/cohavisi/utila-gRPC-Infrastructure/commit/fc4d032)
 and the [runtime evidence](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/deployment-evidence.md).
-The captured lifetime snapshot includes 23 initial failures, then 4,821 successes
-and zero later failures; it is not a guarantee of lossless failover.
+The **initial deployment observation** includes 23 startup failures, followed by
+4,821 successful calls and no further failures in that captured observation.
+It is not a guarantee of lossless failover.
+
+## Later live verification: 2026-11-19
+
+A [separate live evidence run](https://github.com/cohavisi/utila-gRPC-Infrastructure/blob/main/docs/part-2-tasks-3-6-live-evidence-20261119T152720Z.md)
+captured **5,259 successful RPCs, zero recorded failures, and no missing or
+duplicate call numbers** within its continuous capture. Five actual Argo CD
+screenshots accompany baseline, scale-out, graceful pod replacement, server
+rollout, and restoration observations.
+
+The original client remained unchanged with zero restarts. The final captured
+state had three Ready servers and exactly three healthy backend endpoints,
+without retired unhealthy entries. This run is separate from the initial
+deployment observation; their totals must not be combined.
+
+## Subsequent delivery and security improvements
+
+The subsequent delivery improvements added:
+
+- Versioned pre-commit hooks in both repositories. Checks run against isolated
+  staged snapshots, preserving unstaged edits and the deployed checkout's
+  Terraform backend configuration.
+- Gitleaks Git-history scans in both CI workflows; Go binary-symbol analysis
+  with `govulncheck` and Trivy container scanning in the application workflow.
+- Ruff lint/format checks and Trivy analysis of Terraform, rendered Kustomize
+  workloads, and local Argo CD manifests in the infrastructure workflow.
+- Downloadable Go and Python coverage reports, without a minimum threshold.
+  These expose untested paths rather than establishing comprehensive coverage.
+
+The new container scan identified two high-severity dependency advisories.
+The affected dependencies were updated to fixed versions rather than adding
+exceptions. Both updated workflows passed:
+[application](https://github.com/cohavisi/utila-gRPC/actions/runs/44691553606)
+and [infrastructure](https://github.com/cohavisi/utila-gRPC-Infrastructure/actions/runs/44691553228).
+These changes did not deploy a new application image or modify GCP resources.
 
 ## Risk controls and limits
 
@@ -75,7 +114,10 @@ controller retained distinct ownership; cleanup order was documented.
 
 The demonstration does not establish production readiness, application mTLS,
 node/network-failure resilience, or long-lived-stream behavior. Time savings
-and performance improvements were not benchmarked. The
+and performance improvements were not benchmarked. `WaitForReady` can absorb
+transient unavailability within an RPC deadline; zero recorded failures does
+not establish zero added latency. Security scans cover known findings and
+configured policies, not every possible vulnerability. The
 [decision-change criteria](part-2-tasks-3-6-integration-decision.md#when-this-decision-should-change)
 explain how additional requirements would change the architecture.
 
