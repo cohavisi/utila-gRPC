@@ -69,6 +69,20 @@ Generated protobuf sources are included. Regenerate with `protoc` **36.2**
 installed, using `make proto`; the Makefile pins both Go generator versions.
 CI verifies regeneration, formatting, race tests, vet, builds, and the container.
 
+### Pre-commit hook
+
+Enable the versioned hook once per clone:
+
+```sh
+make install-hooks
+```
+
+Each commit checks the staged snapshot for whitespace errors and Go formatting,
+then runs `go test -race ./...` and `go vet ./...`. Failures block the commit;
+unstaged changes are not tested or modified. Go and a working race-detector C
+toolchain must be installed. The hook does not install system tools or format
+files automatically, and CI remains the authoritative shared check.
+
 ## Build and run
 
 ```sh
